@@ -71,6 +71,11 @@ extern int sys_ssetmask();
 extern int sys_setreuid();
 extern int sys_setregid();
 
+// 新系统调用内核实现
+extern int sys_iam();
+extern int sys_whoami();
+
+// 系统调用函数表 用于中断调用时 int 0x80 跳转
 fn_ptr sys_call_table[] = { sys_setup, sys_exit, sys_fork, sys_read,
 sys_write, sys_open, sys_close, sys_waitpid, sys_creat, sys_link,
 sys_unlink, sys_execve, sys_chdir, sys_time, sys_mknod, sys_chmod,
@@ -83,4 +88,4 @@ sys_getgid, sys_signal, sys_geteuid, sys_getegid, sys_acct, sys_phys,
 sys_lock, sys_ioctl, sys_fcntl, sys_mpx, sys_setpgid, sys_ulimit,
 sys_uname, sys_umask, sys_chroot, sys_ustat, sys_dup2, sys_getppid,
 sys_getpgrp, sys_setsid, sys_sigaction, sys_sgetmask, sys_ssetmask,
-sys_setreuid,sys_setregid };
+sys_setreuid, sys_setregid, sys_iam, sys_whoami };

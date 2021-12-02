@@ -57,6 +57,7 @@
 
 #ifdef __LIBRARY__
 
+// 内核系统调用常数 系统调用函数表索引值
 #define __NR_setup	0	/* used only by init, to get system going */
 #define __NR_exit	1
 #define __NR_fork	2
@@ -129,7 +130,10 @@
 #define __NR_ssetmask	69
 #define __NR_setreuid	70
 #define __NR_setregid	71
+#define __NR_iam        72
+#define __NR_whoami     73
 
+// 系统调用宏定义
 #define _syscall0(type,name) \
 type name(void) \
 { \
