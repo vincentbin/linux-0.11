@@ -7,7 +7,7 @@ int sys_iam(const char *name) {
     return 0;
 }
 
-int sys_whoami(char *name, int ) {
+int sys_whoami(char *name, int size) {
     printk("Hello from 'i am yanyibin'.\n");
     return 0;
 }
