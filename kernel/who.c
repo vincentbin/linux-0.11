@@ -16,7 +16,7 @@ int __length;
 int sys_iam(const char *name) {
     int name_len = 0;
     while (get_fs_byte(&name[name_len]) != '\0') {
-        name_len+;
+        name_len++;
     }
     if (name_len > 23) {
         return -EINVAL;
