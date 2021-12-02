@@ -4,8 +4,10 @@
 
 int sys_iam(const char *name) {
     printk("Hello from 'i am yanyibin'.\n");
+    return 0;
 }
 
 int sys_whoami(char *name, int ) {
     printk("Hello from 'i am yanyibin'.\n");
+    return 0;
 }
