@@ -1,5 +1,5 @@
 //
-// Created by 52750 on 2021/12/3.
+// Created by 52750 on 2021/12/3. (注 linux 0.11 无法编译// 注释)
 //
 #include <stdio.h>
 #include <unistd.h>
