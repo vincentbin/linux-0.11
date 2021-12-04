@@ -65,6 +65,8 @@ int copy_mem(int nr,struct task_struct * p)
  *  Ok, this is the main fork-routine. It copies the system process
  * information (task[nr]) and sets up the necessary registers. It
  * also copies the data segment in it's entirety.
+ *
+ * 进程创建 from system_call.s : sys_fork
  */
 int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 		long ebx,long ecx,long edx,
@@ -75,6 +77,7 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	int i;
 	struct file *f;
 
+	// 获得一个tack_process 的结构体空间
 	p = (struct task_struct *) get_free_page();
 	if (!p)
 		return -EAGAIN;
@@ -89,8 +92,12 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->leader = 0;		/* process leadership doesn't inherit */
 	p->utime = p->stime = 0;
 	p->cutime = p->cstime = 0;
+
+	// 设置 开始时间为 jiffies 系统产生过的时钟中断数 100hz
 	p->start_time = jiffies;
-	p->tss.back_link = 0;
+
+    fprintk(3,"%d\t\tNew Process\t\t%d\n", p->pid, jiffies);
+    p->tss.back_link = 0;
 	p->tss.esp0 = PAGE_SIZE + (long) p;
 	p->tss.ss0 = 0x10;
 	p->tss.eip = eip;
@@ -129,7 +136,10 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 		current->executable->i_count++;
 	set_tss_desc(gdt+(nr<<1)+FIRST_TSS_ENTRY,&(p->tss));
 	set_ldt_desc(gdt+(nr<<1)+FIRST_LDT_ENTRY,&(p->ldt));
+
+	// 设置进程为 就绪态 runnable
 	p->state = TASK_RUNNING;	/* do this last, just in case */
+    fprintk(3,"%d\t\tRunnable\t\t%d\n", p->pid, jiffies);
 	return last_pid;
 }
 

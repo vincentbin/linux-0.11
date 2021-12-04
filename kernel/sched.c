@@ -117,6 +117,7 @@ void schedule(void)
 			if (((*p)->signal & ~(_BLOCKABLE & (*p)->blocked)) &&
 			(*p)->state==TASK_INTERRUPTIBLE)
 				(*p)->state=TASK_RUNNING;
+                fprintk(3,"%d\t\tRunnable\t\t%d\n", (*p)->pid, jiffies);
 		}
 
 /* this is the scheduler proper: */
@@ -132,18 +133,32 @@ void schedule(void)
 			if ((*p)->state == TASK_RUNNING && (*p)->counter > c)
 				c = (*p)->counter, next = i;
 		}
+		// 本质上就是找执行时间较短的
 		if (c) break;
 		for(p = &LAST_TASK ; p > &FIRST_TASK ; --p)
 			if (*p)
 				(*p)->counter = ((*p)->counter >> 1) +
 						(*p)->priority;
 	}
+
+	// 如果是当前进程 不输出
+    if (current->pid != task[next] ->pid) {
+        // 当前的要被切换掉 所以current进程进入runnable
+        if (current->state == TASK_RUNNING) {
+            fprintk(3,"%d\t\tRunnable\t\t%d\n", current->pid, jiffies);
+        }
+        fprintk(3,"%d\t\tRunning\t\t%d\n", task[next]->pid, jiffies);
+    }
 	switch_to(next);
 }
 
 int sys_pause(void)
 {
 	current->state = TASK_INTERRUPTIBLE;
+
+    if (current->pid != 0) {
+        fprintk(3,"%d\t\tWait\t\t%d\n", current->pid, jiffies);
+    }
 	schedule();
 	return 0;
 }
@@ -159,9 +174,13 @@ void sleep_on(struct task_struct **p)
 	tmp = *p;
 	*p = current;
 	current->state = TASK_UNINTERRUPTIBLE;
+	// 不可中断阻塞
+    fprintk(3,"%d\t\tWait\t\t%d\n", current->pid, jiffies);
 	schedule();
-	if (tmp)
-		tmp->state=0;
+	if (tmp) {
+        tmp->state=0;
+        fprintk(3,"%d\t\tRunnable\t\t%d\n", tmp->pid, jiffies);
+	}
 }
 
 void interruptible_sleep_on(struct task_struct **p)
@@ -175,20 +194,25 @@ void interruptible_sleep_on(struct task_struct **p)
 	tmp=*p;
 	*p=current;
 repeat:	current->state = TASK_INTERRUPTIBLE;
+    fprintk(3,"%d\t\tWait\t\t%d\n", current->pid, jiffies);
 	schedule();
 	if (*p && *p != current) {
 		(**p).state=0;
+        fprintk(3,"%d\t\tRunnable\t\t%d\n", (*p)->pid, jiffies);
 		goto repeat;
 	}
 	*p=NULL;
-	if (tmp)
-		tmp->state=0;
+	if (tmp) {
+        fprintk(3, "%d\t\tRunnable\t\t%d\n", tmp->pid, jiffies);
+        tmp->state=0;
+    }
 }
 
 void wake_up(struct task_struct **p)
 {
 	if (p && *p) {
 		(**p).state=0;
+        fprintk(3, "%d\t\tRunnable\t\t%d\n", (*p)->pid, jiffies);
 		*p=NULL;
 	}
 }
