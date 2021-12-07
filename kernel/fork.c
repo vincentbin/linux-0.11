@@ -116,10 +116,6 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->tss.ldt = _LDT(nr);
 	p->tss.trace_bitmap = 0x80000000;
 
-
-
-
-
     /* 然后这里要加上基于堆栈切换的代码(对frok的修改其实就是对子进程内核栈的初始化 */
     long* krnstack;
     /* p指针加上页面大小就是子进程的内核栈位置，所以这句话就是krnstack指针指向子进程的内核栈 */
