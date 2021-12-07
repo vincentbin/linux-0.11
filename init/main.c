@@ -199,6 +199,7 @@ void init(void)
 			(void) dup(0);
 			_exit(execve("/bin/sh",argv,envp));
 		}
+        printf("ty hello.\n");
 		while (1)
 			if (pid == wait(&i))
 				break;

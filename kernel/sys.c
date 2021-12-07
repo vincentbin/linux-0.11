@@ -205,9 +205,7 @@ int sys_getpgrp(void)
 
 int sys_setsid(void)
 {
-    printk("yanyibin hello.\n");
 	if (current->leader && !suser())
-        printk("ty hello.\n");
 		return -EPERM;
 	current->leader = 1;
 	current->session = current->pgrp = current->pid;
