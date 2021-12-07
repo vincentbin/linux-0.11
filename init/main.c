@@ -192,7 +192,6 @@ void init(void)
 			continue;
 		}
 		if (!pid) {
-            printf("yanyibin hello.\n");
 			close(0);close(1);close(2);
 			setsid();
 			(void) open("/dev/tty0",O_RDWR,0);
