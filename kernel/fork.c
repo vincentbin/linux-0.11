@@ -19,6 +19,8 @@
 
 extern void write_verify(unsigned long address);
 
+extern long first_return_from_kernel(void);
+
 long last_pid=0;
 
 void verify_area(void * addr,int size)
@@ -90,6 +92,9 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->utime = p->stime = 0;
 	p->cutime = p->cstime = 0;
 	p->start_time = jiffies;
+
+	/* 基于tss的切换
+
 	p->tss.back_link = 0;
 	p->tss.esp0 = PAGE_SIZE + (long) p;
 	p->tss.ss0 = 0x10;
@@ -111,6 +116,9 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->tss.gs = gs & 0xffff;
 	p->tss.ldt = _LDT(nr);
 	p->tss.trace_bitmap = 0x80000000;
+
+    */
+
 	if (last_task_used_math == current)
 		__asm__("clts ; fnsave %0"::"m" (p->tss.i387));
 	if (copy_mem(nr,p)) {
@@ -118,6 +126,37 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 		free_page((long) p);
 		return -EAGAIN;
 	}
+
+    /* 然后这里要加上基于堆栈切换的代码(对frok的修改其实就是对子进程内核栈的初始化 */
+    long* krnstack;
+    /* p指针加上页面大小就是子进程的内核栈位置，所以这句话就是krnstack指针指向子进程的内核栈 */
+    krnstack = (long)(PAGE_SIZE +(long)p);
+
+
+    *(--krnstack) = ss & 0xffff;
+    *(--krnstack) = esp;
+    *(--krnstack) = eflags;
+    *(--krnstack) = cs & 0xffff;
+    *(--krnstack) = eip;
+
+    *(--krnstack) = ds & 0xffff;
+    *(--krnstack) = es & 0xffff;
+    *(--krnstack) = fs & 0xffff;
+    *(--krnstack) = gs & 0xffff;
+    *(--krnstack) = esi;
+    *(--krnstack) = edi;
+    *(--krnstack) = edx;
+
+    /* 处理switch_to返回的位置 */
+    *(--krnstack) = (long) first_return_from_kernel;
+
+    *(--krnstack) = ebp;
+    *(--krnstack) = ecx;
+    *(--krnstack) = ebx;
+    *(--krnstack) = 0;
+    p->kernelstack = krnstack;
+
+
 	for (i=0; i<NR_OPEN;i++)
 		if ((f=p->filp[i]))
 			f->f_count++;

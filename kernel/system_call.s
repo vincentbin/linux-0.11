@@ -45,6 +45,9 @@ EFLAGS		= 0x24
 OLDESP		= 0x28
 OLDSS		= 0x2C
 
+ESP0            = 4
+KERNEL_STACK    = 12
+
 state	= 0		# these are offsets into the task-struct.
 counter	= 4
 priority = 8
@@ -67,6 +70,9 @@ nr_system_calls = 72
 .globl system_call,sys_fork,timer_interrupt,sys_execve
 .globl hd_interrupt,floppy_interrupt,parallel_interrupt
 .globl device_not_available, coprocessor_error
+
+.globl switch_to
+.globl first_return_from_kernel
 
 .align 2
 bad_sys_call:
@@ -217,6 +223,68 @@ sys_fork:
 	call copy_process
 	addl $20,%esp
 1:	ret
+
+
+.align 2
+switch_to:
+    pushl %ebp
+    movl %esp,%ebp
+    pushl %ecx
+    pushl %ebx
+    pushl %eax
+
+    # 将下一个进程的pcb 存入 ebx寄存器中
+    movl 8(%ebp),%ebx
+    # 对比下一个是否是当前进程 如果是直接返回
+    cmpl %ebx,current
+    je 1f
+
+    # 切换pcb
+    movl %ebx,%eax
+    xchgl %eax,current
+
+    # 重写tss指针 int中断需要
+    movl tss,%ecx
+    # ebx 指向到下一个进程的内核栈
+    addl $4096,%ebx
+    movl %ebx,ESP0(%ecx)
+
+    # 切换内核栈
+    movl %esp,KERNEL_STACK(%eax)
+    movl 8(%ebp),%ebx
+    movl KERNEL_STACK(%ebx),%esp
+
+    # LDT的切换
+    movl 12(%ebp),%ecx
+    # 修改LDTR寄存器
+    lldt %cx
+    movl $0x17,%ecx
+    # 补:FS的作用:通过FS操作系统才能访问进程的用户态内存。
+    # 这里LDT切换完成意味着切换到了新的用户态地址空间，所以需要重置FS。
+    mov %cx,%fs
+
+    cmpl %eax,last_task_used_math
+    jne 1f
+    clts
+
+1:	popl %eax
+    popl %ebx
+    popl %ecx
+    popl %ebp
+    ret
+
+
+.align 2
+first_return_from_kernel:
+    popl %edx
+    popl %edi
+    popl %esi
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    iret
+
 
 hd_interrupt:
 	pushl %eax

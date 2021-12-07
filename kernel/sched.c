@@ -50,6 +50,8 @@ extern void mem_use(void);
 extern int timer_interrupt(void);
 extern int system_call(void);
 
+extern long switch_to(struct task_struct *p, unsigned long address);
+
 union task_union {
 	struct task_struct task;
 	char stack[PAGE_SIZE];
@@ -63,6 +65,9 @@ struct task_struct *current = &(init_task.task);
 struct task_struct *last_task_used_math = NULL;
 
 struct task_struct * task[NR_TASKS] = {&(init_task.task), };
+
+struct tast_struct* p_next = &(init_task.task);
+struct tss_struct* tss = &(init_task.task.tss);
 
 long user_stack [ PAGE_SIZE>>2 ] ;
 
@@ -129,8 +134,11 @@ void schedule(void)
 		while (--i) {
 			if (!*--p)
 				continue;
-			if ((*p)->state == TASK_RUNNING && (*p)->counter > c)
-				c = (*p)->counter, next = i;
+			if ((*p)->state == TASK_RUNNING && (*p)->counter > c) {
+                c = (*p)->counter, next = i;
+                // next pcb task_struct 指针
+                p_next = *p;
+            }
 		}
 		if (c) break;
 		for(p = &LAST_TASK ; p > &FIRST_TASK ; --p)
@@ -138,7 +146,8 @@ void schedule(void)
 				(*p)->counter = ((*p)->counter >> 1) +
 						(*p)->priority;
 	}
-	switch_to(next);
+	switch_to(p_next, _LDT(next));
+	//switch_to(next);
 }
 
 int sys_pause(void)
