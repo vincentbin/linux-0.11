@@ -21,3 +21,6 @@
     - 运行、阻塞态切换 kernel/sched.c -> schedule sys_pause sleep_on interruptible_sleep_on wake_up
     - 退出 kernel/exit.c -> do_exit sys_waitpid
 6. 注意：linux-0.11 中gcc 不可以编译 //注释
+
+## lab3 替换linux0.11原有的tss进程切换为栈堆切换（branch lab3）
+
