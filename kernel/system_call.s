@@ -51,9 +51,10 @@ KERNEL_STACK    = 12
 state	= 0		# these are offsets into the task-struct.
 counter	= 4
 priority = 8
-signal	= 12
-sigaction = 16		# MUST be 16 (=len of sigaction)
-blocked = (33*16)
+kernelstack = 12 # 新加入 内核栈
+signal	= 16
+sigaction = 20		# MUST be 16 (=len of sigaction)
+blocked = (37*16)
 
 # offsets within sigaction
 sa_handler = 0
