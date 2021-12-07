@@ -108,10 +108,10 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
     *(--krnstack) = ecx;
     *(--krnstack) = ebx;
     *(--krnstack) = 0;
-    p->kernelstack = krnstack;
 
-	task[nr] = p;
-	*p = *current;	/* NOTE! this doesn't copy the supervisor stack */
+    task[nr] = p;
+    *p = *current; /* NOTE! this doesn't copy the supervisor stack */
+    p->kernelstack = krnstack;
 	p->state = TASK_UNINTERRUPTIBLE;
 	p->pid = last_pid;
 	p->father = current->pid;
