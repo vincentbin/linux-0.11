@@ -150,10 +150,9 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
     *(--krnstack) = 0;
     p->kernelstack = krnstack;
 
-    /*
+
     if (last_task_used_math == current)
             __asm__("clts ; fnsave %0"::"m" (p->tss.i387));
-    */
     if (copy_mem(nr,p)) {
         task[nr] = NULL;
         free_page((long) p);
