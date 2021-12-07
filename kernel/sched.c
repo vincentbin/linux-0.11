@@ -66,7 +66,7 @@ struct task_struct *last_task_used_math = NULL;
 
 struct task_struct * task[NR_TASKS] = {&(init_task.task), };
 
-struct task_struct* p_next = &(init_task.task);
+struct task_struct* p_next = current;
 struct tss_struct* tss = &(init_task.task.tss);
 
 long user_stack [ PAGE_SIZE>>2 ] ;
