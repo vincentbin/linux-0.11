@@ -199,10 +199,11 @@ void init(void)
 			(void) dup(0);
 			_exit(execve("/bin/sh",argv,envp));
 		}
-        printf("ty hello.\n");
-		while (1)
-			if (pid == wait(&i))
-				break;
+		while (1) {
+            printf(pid);
+            if (pid == wait(&i))
+                break;
+		}
 		printf("\n\rchild %d died with code %04x\n\r",pid,i);
 		sync();
 	}
