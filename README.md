@@ -22,6 +22,20 @@
     - 退出 kernel/exit.c -> do_exit sys_waitpid
 6. 注意：linux-0.11 中gcc 不可以编译 //注释
 
-## lab3 替换linux0.11原有的tss进程切换为栈堆切换（branch lab3）
+## lab3 替换linux0.11原有的tss进程切换为堆栈切换（branch lab3）
+原切换方式是通过tss，相当于是寄存器的快照，通过intel提供的指令直接进行现场替换，速度较慢。堆栈切换的效率更高。
+### kernel/sched.c
+1. 原switch_to方法基于tss切换，我们要在头文件将其注释掉。
+2. 新switch_to，需要两个参数（1：下一个pcb的指针 2：下一个任务在数组中的位置 用于切换LDT）。
+### kernel/system_call.s
+1. 编写switch_to 汇编实现。
+2. pcb的切换。
+3. 重写tss内核栈位置。（此时保留tss，但全局只有一个tss，不利用它来做进程切换。）
+4. 切换内核栈
+5. LDT的切换
+### kernel/fork.c
+1. 将pcb中tss的设置注销掉。
+2. 在pcb中加入新的成员变量 —— kernel stack，用于存储内核栈信息。
+3. 将栈信息写入此处，并让pcb该成员变量指向该指针。
 
-https://blog.csdn.net/qq_42518941/article/details/119182097
+参考：https://blog.csdn.net/qq_42518941/article/details/119182097
