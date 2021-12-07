@@ -191,10 +191,11 @@ void init(void)
 			printf("Fork failed in init\r\n");
 			continue;
 		}
-        printf("yanyibin hello\n");
+        // printf("yanyibin hello\n");
 		if (!pid) {
 			close(0);close(1);close(2);
 			setsid();
+            printf("yanyibin hello.\n");
 			(void) open("/dev/tty0",O_RDWR,0);
 			(void) dup(0);
 			(void) dup(0);
