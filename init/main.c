@@ -191,6 +191,7 @@ void init(void)
 			printf("Fork failed in init\r\n");
 			continue;
 		}
+        printf("yanyibin hello\n");
 		if (!pid) {
 			close(0);close(1);close(2);
 			setsid();
