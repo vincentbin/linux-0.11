@@ -19,8 +19,6 @@
 
 extern void write_verify(unsigned long address);
 
-extern long first_return_from_kernel(void);
-
 long last_pid=0;
 
 void verify_area(void * addr,int size)
@@ -94,7 +92,7 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->cutime = p->cstime = 0;
 	p->start_time = jiffies;
 
-	/* 基于tss的切换
+	/* 基于tss的切换 */
 
 	p->tss.back_link = 0;
 	p->tss.esp0 = PAGE_SIZE + (long) p;
@@ -118,7 +116,7 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	p->tss.ldt = _LDT(nr);
 	p->tss.trace_bitmap = 0x80000000;
 
-	*/
+
 
 
 

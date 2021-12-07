@@ -37,6 +37,11 @@ volatile void panic(const char * str);
 #endif
 extern int tty_write(unsigned minor,char * buf,int count);
 
+
+extern void switch_to(struct task_struct* p_next, unsigned long ldt); /* add lab4 */
+extern void first_return_from_kernel(void); /* add lab4 */
+
+
 typedef int (*fn_ptr)();
 
 struct i387_struct {

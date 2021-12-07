@@ -200,8 +200,6 @@ void init(void)
 			_exit(execve("/bin/sh",argv,envp));
 		}
 		while (1) {
-            printf("tongyan.\n");
-            printf(pid);
             if (pid == wait(&i))
                 break;
 		}

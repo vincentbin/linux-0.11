@@ -50,7 +50,6 @@ extern void mem_use(void);
 extern int timer_interrupt(void);
 extern int system_call(void);
 
-extern long switch_to(struct task_struct *p, unsigned long address);
 
 union task_union {
 	struct task_struct task;
@@ -66,8 +65,8 @@ struct task_struct *last_task_used_math = NULL;
 
 struct task_struct * task[NR_TASKS] = {&(init_task.task), };
 
-struct task_struct* p_next = &(init_task.task);
-struct tss_struct* tss = &(init_task.task.tss);
+// struct task_struct* p_next = &(init_task.task);
+extern struct tss_struct* tss = &(init_task.task.tss);
 
 long user_stack [ PAGE_SIZE>>2 ] ;
 
@@ -110,6 +109,9 @@ void schedule(void)
 {
 	int i,next,c;
 	struct task_struct ** p;
+
+	// add in lab3
+    struct task_struct* p_next = &(init_task.task);
 
 /* check alarm, wake up any interruptible tasks that have got a signal */
 
