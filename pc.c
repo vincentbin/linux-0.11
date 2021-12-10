@@ -20,8 +20,10 @@ int main()
     strcpy(s_name1, "semaphore a1");
     strcpy(s_name2, "semaphore a2");
 
-    sem* s1 = (sem*) sem_open(s_name1, 1);
-    sem* s2 = (sem*) sem_open(s_name2, 0);
+    sem* s1;
+    sem* s2;
+    s1 = (sem*) sem_open(s_name1, 1);
+    s2 = (sem*) sem_open(s_name2, 0);
 
     int i;
     i = 0;
