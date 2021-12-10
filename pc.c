@@ -35,6 +35,7 @@ int main()
                 printf("%d: %d\n", getpid(), i % 2);
                 fflush(stdout);
                 sem_post(s2);
+                exit(0);
             }
         } else {
             if (!fork()) {
@@ -42,10 +43,12 @@ int main()
                 printf("%d: %d\n", getpid(), i % 2);
                 fflush(stdout);
                 sem_post(s1);
+                exit(0);
             }
         }
         i++;
     }
+    while (waitpid(-1, NULL, 0) > 0);
     sem_unlink(s_name1);
     sem_unlink(s_name2);
     return 0;
