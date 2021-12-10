@@ -1,17 +1,19 @@
 //
 // Created by 52750 on 2021/12/10.
 //
-
 #include <linux/sem.h>
-#include <string.h>             /* strcpy()  strcmp() */
-#include <asm/segment.h>        /* get_fs_byte() */
-#include <unistd.h>             /* NULL */
-#include <asm/system.h>         /* cli()  sti() */
+#include <linux/sched.h>
+#include <unistd.h>
+#include <asm/segment.h>
+#include <linux/tty.h>
 #include <linux/kernel.h>
+#include <linux/fdreg.h>
+#include <asm/system.h>
+#include <asm/io.h>
 
 
 sem sem_table[SEM_TABLE_SIZE];
-int index = 0;
+int t_index = 0;
 
 sem* sys_sem_open(const char* name, unsigned int value) {
     char kernel_name[20];
@@ -28,7 +30,7 @@ sem* sys_sem_open(const char* name, unsigned int value) {
     }
     int name_len = strlen(kernel_name);
     int exist = 0;
-    for (i = 0; i < index; i++) {
+    for (i = 0; i < t_index; i++) {
         if (strlen(sem_table[i].name) == name_len && !strcmp(kernel_name, sem_table[i].name)) {
             exist = 1;
             break;
@@ -40,10 +42,10 @@ sem* sys_sem_open(const char* name, unsigned int value) {
     }
     for (i = 0; i < name_len; i++)
     {
-        sem_table[index].name[i] = kernelname[i];
+        sem_table[t_index].name[i] = kernel_name[i];
     }
-    sem_table[index].value = value;
-    return (sem*) (&sem_table[index++]);
+    sem_table[t_index].value = value;
+    return (sem*) (&sem_table[t_index++]);
 }
 
 int sys_sem_wait(sem* s) {
@@ -73,7 +75,7 @@ int sys_sem_unlink(const char* name) {
         name_cnt++;
     }
     if (name_cnt > MAX_NAME) {
-        return NULL;
+        return -1;
     }
     int i = 0;
     for (i = 0; i < name_cnt; i++) {
@@ -81,18 +83,18 @@ int sys_sem_unlink(const char* name) {
     }
     int name_len = strlen(kernel_name);
     int exist = 0;
-    for (i = 0; i < index; i++) {
+    for (i = 0; i < t_index; i++) {
         if (strlen(sem_table[i].name) == name_len && !strcmp(kernel_name, sem_table[i].name)) {
             exist = 1;
             break;
         }
     }
     if (exist) {
-        int t_index = i;
-        for (t_index = i; t_index < cnt; t_index++) {
-            sem_table[t_index] = sem_table[t_index + 1];
+        int tmp_index = i;
+        for (tmp_index = i; tmp_index < t_index; tmp_index++) {
+            sem_table[tmp_index] = sem_table[tmp_index + 1];
         }
-        index--;
+        t_index--;
         return 0;
     }
     return -1;
