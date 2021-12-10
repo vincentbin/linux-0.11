@@ -23,12 +23,12 @@ int main()
     char s_name2[20];
     strcpy(s_name1, "semaphore a1");
     strcpy(s_name2, "semaphore a2");
-    
+
     s1 = (sem*) sem_open(s_name1, 1);
     s2 = (sem*) sem_open(s_name2, 0);
 
     i = 0;
-    while (i < 30) {
+    while (i < 15) {
         if (i % 2 == 0) {
             if (!fork()) {
                 sem_wait(s1);
