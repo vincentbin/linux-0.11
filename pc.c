@@ -12,6 +12,10 @@ _syscall1(int, sem_wait, sem*, s);
 _syscall1(int, sem_post, sem*, s);
 _syscall1(int, sem_unlink, const char*, name);
 
+int i;
+
+sem* s1;
+sem* s2;
 
 int main()
 {
@@ -19,13 +23,10 @@ int main()
     char s_name2[20];
     strcpy(s_name1, "semaphore a1");
     strcpy(s_name2, "semaphore a2");
-
-    sem* s1;
-    sem* s2;
+    
     s1 = (sem*) sem_open(s_name1, 1);
     s2 = (sem*) sem_open(s_name2, 0);
 
-    int i;
     i = 0;
     while (i < 30) {
         if (i % 2 == 0) {
