@@ -13,6 +13,7 @@ _syscall1(int, sem_post, sem*, s);
 _syscall1(int, sem_unlink, const char*, name);
 
 int i;
+int j;
 
 sem* s1;
 sem* s2;
@@ -29,25 +30,28 @@ int main()
 
     i = 0;
     while (i < 15) {
-        if (i % 2 == 0) {
-            if (!fork()) {
-                sem_wait(s1);
-                printf("%d: %d\n", getpid(), i % 2);
-                fflush(stdout);
-                sem_post(s2);
-                exit(0);
-            }
-        } else {
-            if (!fork()) {
-                sem_wait(s2);
-                printf("%d: %d\n", getpid(), i % 2);
-                fflush(stdout);
-                sem_post(s1);
-                exit(0);
-            }
+        if (!fork()) {
+            sem_wait(s1);
+            printf("%d: %d\n", getpid(), i % 2);
+            fflush(stdout);
+            sem_post(s2);
+            exit(0);
         }
-        i++;
+        i = i + 2;
     }
+
+    j = 1;
+    while (j < 15) {
+        if (!fork()) {
+            sem_wait(s2);
+            printf("%d: %d\n", getpid(), j % 2);
+            fflush(stdout);
+            sem_post(s1);
+            exit(0);
+        }
+        j = j + 2;
+    }
+
     while (waitpid(-1, NULL, 0) > 0);
     sem_unlink(s_name1);
     sem_unlink(s_name2);
