@@ -15,18 +15,16 @@ _syscall1(int, sem_unlink, const char*, name);
 
 int main()
 {
-    char s_name[20];
-    pid_t p_pid;
-
     char s_name1[20];
     char s_name2[20];
-    s_name1 = "semaphore a1";
-    s_name2 = "semaphore a2";
+    strcpy(s_name1, "semaphore a1");
+    strcpy(s_name2, "semaphore a2");
 
-    s1 = sem_open(s_name1, 1);
-    s2 = sem_open(s_name2, 0);
+    sem* s1 = (sem*) sem_open(s_name1, 1);
+    sem* s2 = (sem*) sem_open(s_name2, 0);
 
-    int i = 0;
+    int i;
+    i = 0;
     while (i < 30) {
         if (i % 2 == 0) {
             if (!fork()) {
@@ -43,6 +41,7 @@ int main()
                 sem_post(s1);
             }
         }
+        i++;
     }
     sem_unlink(s_name1);
     sem_unlink(s_name2);
