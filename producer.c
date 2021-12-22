@@ -18,28 +18,11 @@ _syscall2(int,shmget,int,key,int,size);
 #define NUMBER 520 /*打出数字总数*/
 #define BUFSIZE 10 /*缓冲区大小*/
 
-sem_t   *empty, *full, *mutex;
 int main()
 {
-    int  i,shmid;
+    int  i, shmid;
     int *p;
     int  buf_in = 0; /*写入缓冲区位置*/
-    /*打开信号量*/
-    if((mutex = sem_open("mutex", 1)) == NULL)
-    {
-        perror("sem_open() error!\n");
-        return -1;
-    }
-    if((empty = sem_open("empty",10)) == NULL)
-    {
-        perror("sem_open() error!\n");
-        return -1;
-    }
-    if((full = sem_open("full", 0)) == NULL)
-    {
-        perror("sem_open() error!\n");
-        return -1;
-    }
     /*shmid = shmget("buffer");*/
     shmid = shmget(1234, BUFSIZE);
     printf("shmid: %d.\n", shmid);
@@ -51,21 +34,12 @@ int main()
     /*生产者进程*/
     printf("producer start.\n");
     fflush(stdout);
-    for( i = 0 ; i < NUMBER; i++)
-    {
-        sem_wait(empty);
-        sem_wait(mutex);
+    for(i = 0 ; i < NUMBER; i++) {
         printf("%d.\n", i);
         p[buf_in] = i;
         buf_in = (buf_in + 1) % BUFSIZE;
-        sem_post(mutex);
-        sem_post(full);
     }
     printf("producer end.\n");
     fflush(stdout);
-    /*释放信号量*/
-    sem_unlink("full");
-    sem_unlink("empty");
-    sem_unlink("mutex");
     return 0;
 }
