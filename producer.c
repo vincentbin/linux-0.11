@@ -25,7 +25,7 @@ int main()
     int *p;
     int  buf_in = 0; /*写入缓冲区位置*/
     /*打开信号量*/
-    if((mutex = sem_open("mutex",1)) == NULL)
+    if((mutex = sem_open("mutex", 1)) == NULL)
     {
         perror("sem_open() error!\n");
         return -1;
@@ -35,14 +35,14 @@ int main()
         perror("sem_open() error!\n");
         return -1;
     }
-    if((full = sem_open("full",0)) == NULL)
+    if((full = sem_open("full", 0)) == NULL)
     {
         perror("sem_open() error!\n");
         return -1;
     }
     /*shmid = shmget("buffer");*/
     shmid = shmget(1234, BUFSIZE);
-    printf("shmid: %d.\n",shmid);
+    printf("shmid: %d.\n", shmid);
     if(shmid == -1)
     {
         return -1;
@@ -55,8 +55,9 @@ int main()
     {
         sem_wait(empty);
         sem_wait(mutex);
+        printf("%d.\n", i);
         p[buf_in] = i;
-        buf_in = ( buf_in + 1)% BUFSIZE;
+        buf_in = (buf_in + 1) % BUFSIZE;
         sem_post(mutex);
         sem_post(full);
     }

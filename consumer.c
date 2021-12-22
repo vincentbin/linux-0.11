@@ -50,10 +50,9 @@ int main()
     {
         return -1;
     }
-    p = (int *)shmat(shmid);
+    p = (int *) shmat(shmid);
 
-    for( i = 0; i < NUMBER; i++ )
-    {
+    for( i = 0; i < NUMBER; i++ ) {
         sem_wait(full);
         sem_wait(mutex);
 
@@ -63,7 +62,7 @@ int main()
         sem_post(mutex);
         sem_post(empty);
         /*消费资源*/
-        printf("%d:  %d\n",getpid(),data);
+        printf("%d: %d.\n", getpid(), data);
         fflush(stdout);
     }
     printf("consumer end.\n");
