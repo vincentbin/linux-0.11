@@ -31,7 +31,7 @@ int sys_shmget(unsigned int key, unsigned int size)
     }
     printk("shmget get memory's address is 0x%08x.\n", page);
     for (i = 0; i < SHM_SIZE; i++) {
-        if (shm_list[i].key == key) {
+        if (shm_list[i].key == 0) {
             shm_list[i].key = key;
             shm_list[i].size = size;
             shm_list[i].page = page;

@@ -42,7 +42,7 @@ int main()
     }
     /*shmid = shmget("buffer");*/
     shmid = shmget(1234, BUFSIZE);
-    printf("shmid:%d\n",shmid);
+    printf("shmid: %d.\n",shmid);
     if(shmid == -1)
     {
         return -1;
