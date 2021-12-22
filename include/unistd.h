@@ -130,13 +130,11 @@
 #define __NR_setreuid	70
 #define __NR_setregid	71
 
-// lab4
 #define __NR_sem_open   72
 #define __NR_sem_wait   73
 #define __NR_sem_post   74
 #define __NR_sem_unlink 75
 
-// lab5
 #define __NR_shmget  76
 #define __NR_shmat   77
 
@@ -196,7 +194,6 @@ return -1; \
 
 
 
-// lab5
 #define SHM_SIZE 64
 
 typedef struct shm_ds {
