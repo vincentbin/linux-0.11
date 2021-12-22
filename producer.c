@@ -15,7 +15,7 @@ _syscall1(void*,shmat,int,shmid);
 _syscall2(int,shmget,int,key,int,size);
 /*_syscall1(int,shmget,char*,name);*/
 
-#define NUMBER 520 /*打出数字总数*/
+#define NUMBER 5 /*打出数字总数*/
 #define BUFSIZE 10 /*缓冲区大小*/
 
 int main()
