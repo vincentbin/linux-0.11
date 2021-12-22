@@ -44,5 +44,30 @@
 ### 前置重点知识点
 1. kernal/sched.c sleep_on 传入等待队列队首，将current置为阻塞态，主动执行调度schedule()。tmp存储原阻塞队列，当被唤醒时，将阻塞队列全部置为Runnable。
 2. kernal/sched.c wake_up 唤醒所有被阻塞的pcb，程序中只能看到唤醒队首，但要结合sleep_on读，一旦结合就会发现，头被唤醒会使后续全部唤醒。
+### 编写应用程序“pc.c”，解决经典的生产者—消费者问题，完成下面的功能：
+- 建立一个生产者进程，N 个消费者进程（N>1）
+- 用文件建立一个共享缓冲区
+- 生产者进程依次向缓冲区写入整数 0,1,2,…,M，M>=500
+- 消费者进程从缓冲区读数，每次读一个，并将读出的数字从缓冲区删除，然后将本进程 ID 和 + 数字输出到标准输出
+- 缓冲区同时最多只能保存 10 个数
+### 实现信号量
+```c
+sem_t* sem_open(const char *name, unsigned int value);
+int sem_wait(sem_t *sem);
+int sem_post(sem_t *sem);
+int sem_unlink(const char *name);
+```
+- sem_open打开一个信号量
+- 信号量减一 如果当前等于零则阻塞进程
+- 信号量加一
+- 关闭一个信号量
+### wait 与 post 的重点
+- wait
+    - 调用kernal/sched.c sleep_on 进行等待阻塞
+    - 利用关中断（linux0.11 单核）做到保护临界区
+    - 对 sem 的 value 减一
+- post
+    - 对 sem 的 value 加一，如果 value 大于0则调用 kernal/sched.c wake_up 唤醒被此信号量阻塞的进程
+    - 利用关中断（linux0.11 单核）做到保护临界区
 
 ## lab5 地址的映射与共享（branch lab5）
