@@ -348,3 +348,12 @@ void do_tty_interrupt(int tty)
 void chr_dev_init(void)
 {
 }
+
+int f12_status = 0;
+void change_f12_status(void) {
+    if (f12_status) {
+        f12_status = 0;
+        return;
+    }
+    f12_status = 1;
+}
