@@ -459,7 +459,7 @@ void con_write(struct tty_struct * tty)
 						lf();
 					}
 					if (f12_status) {
-					    if ((c > 'A' && c < 'Z') || (c > 'a' && c < 'z') || (c > '0' && c < '9')) {
+					    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
 					        c = '*';
 					    }
 					}
