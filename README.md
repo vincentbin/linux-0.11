@@ -71,4 +71,6 @@ int sem_unlink(const char *name);
     - 利用关中断（linux0.11 单核）做到保护临界区
 
 ## lab5 地址的映射与共享（branch lab5）
-逻辑地址 -> GDT -> LDT -> 页表 -> 物理地址 
+逻辑地址 -> GDT -> LDT -> 页表 -> 物理地址
+
+## lab6 终端设备的控制（branch lab6）
