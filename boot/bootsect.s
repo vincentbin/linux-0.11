@@ -95,7 +95,7 @@ ok_load_setup:
 	xor	bh,bh
 	int	0x10
 	
-	mov	cx,#24
+	mov	cx,#338
 	mov	bx,#0x0007		! page 0, attribute 7 (normal)
 	mov	bp,#msg1
 	mov	ax,#0x1301		! write string, move cursor
@@ -243,6 +243,18 @@ sectors:
 
 msg1:
 	.byte 13,10
+    .ascii "#    #     #    #    #   ####   ######  #    #   #####"
+    .byte 13,10
+    .ascii "#    #     #    ##   #  #    #  #       ##   #     #"
+    .byte 13,10
+    .ascii "#    #     #    # #  #  #       #####   # #  #     #"
+    .byte 13,10
+    .ascii "#    #     #    #  # #  #       #       #  # #     #"
+    .byte 13,10
+    .ascii " #  #      #    #   ##  #    #  #       #   ##     #"
+    .byte 13,10
+    .ascii "  ##       #    #    #   ####   ######  #    #     #"
+    .byte 13,10
 	.ascii "Loading system ..."
 	.byte 13,10,13,10
 
