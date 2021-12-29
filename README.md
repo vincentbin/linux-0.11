@@ -1,5 +1,7 @@
 # linux-0.11
 
+## lab0 操作系统的引导（branch lab0）
+
 ## lab1 实现系统调用（branch lab1）
 1. 在 kernel/system_call.s 修改系统调用总数为74。
 2. 在 include/unistd.h 中添加宏，指明调用函数表定位。
