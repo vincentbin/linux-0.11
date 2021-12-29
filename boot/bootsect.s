@@ -254,8 +254,6 @@ msg1:
     .ascii " #  #      #    #   ##  #    #  #       #   ##     #"
     .byte 13,10
     .ascii "  ##       #    #    #   ####   ######  #    #     #"
-    .byte 13,10
-	.ascii "Loading system ..."
 	.byte 13,10,13,10
 
 .org 508
