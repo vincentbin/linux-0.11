@@ -95,7 +95,7 @@ ok_load_setup:
 	xor	bh,bh
 	int	0x10
 	
-	mov	cx,#36
+	mov	cx,#37
 	mov	bx,#0x0007		! page 0, attribute 7 (normal)
 	mov	bp,#msg1
 	mov	ax,#0x1301		! write string, move cursor
@@ -243,7 +243,7 @@ sectors:
 
 msg1:
     .byte 13,10
-    .ascii "Hello OS world, my name is YYB"
+    .ascii "Hello OS world, my name is YYB."
 	.byte 13,10,13,10
 
 .org 508
