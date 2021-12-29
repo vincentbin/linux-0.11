@@ -1,6 +1,13 @@
 # linux-0.11
 
 ## lab0 操作系统的引导（branch lab0）
+1. 改写 bootsect.s 主要完成如下功能：
+    - bootsect.s 能在屏幕上打印一段提示信息“XXX is booting...”。
+
+2. 改写 setup.s 主要完成如下功能：
+    - bootsect.s 能完成 setup.s 的载入，并跳转到 setup.s 开始地址执行。而 setup.s 向屏幕输出一行"Now we are in SETUP"。
+    setup.s 能获取至少一个基本的硬件参数（如内存参数、显卡参数、硬盘参数等），将其存放在内存的特定地址，并输出到屏幕上。
+    setup.s 不再加载 Linux 内核，保持上述信息显示在屏幕上即可。
 
 ## lab1 实现系统调用（branch lab1）
 1. 在 kernel/system_call.s 修改系统调用总数为74。
