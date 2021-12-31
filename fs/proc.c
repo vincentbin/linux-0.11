@@ -40,7 +40,7 @@ int proc_read(int dev, char* buf, int count, unsigned long* pos) {
 
         for (p = &FIRST_TASK; p <= &LAST_TASK; ++p) {
             if (*p) {
-                len = sprintf(tbuf, "%ld\t%ld\t%ld\t  %ld\t\t%ld\n", (*p)->pid, (*p)->state, (*p)->father, (*p)->counter, (*p)->start_time);
+                len = sprintf(tbuf, "%ld\t%ld\t%ld\t  %ld\t   %ld\n", (*p)->pid, (*p)->state, (*p)->father, (*p)->counter, (*p)->start_time);
                 total_len += len;
                 if (flag)
                     strncpy(infobuf + strlen(infobuf), tbuf, strlen(tbuf));
