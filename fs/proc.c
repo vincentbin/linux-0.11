@@ -6,6 +6,8 @@
 #include <asm/segment.h>
 #include <linux/fs.h>
 
+extern int vsprintf(char* buf, const char* fmt, va_list args);
+
 int sprintf(char *buf, const char* fmt, ...){
     va_list args;
     int i;
@@ -15,7 +17,7 @@ int sprintf(char *buf, const char* fmt, ...){
     return i;
 }
 
-int proc_read(unsigned short dev, char *buf, int count, off_t *pos){
+int proc_read(int dev, char* buf, int count, unsigned long* pos) {
     int res = 0;
     /* for psinfo */
     if (dev == 0) {
