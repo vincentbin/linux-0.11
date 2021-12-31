@@ -25,7 +25,7 @@ static inline _syscall0(int,pause)
 static inline _syscall1(int,setup,void *,BIOS)
 static inline _syscall0(int,sync)
 
-_syscall2(int, mkdir, const char*, name, mode_t,mode)
+_syscall2(int, mkdir, const char*, name, mode_t, mode)
 _syscall3(int, mknod, const char*, filename, mode_t,mode, dev_t, dev)
 
 #include <linux/tty.h>

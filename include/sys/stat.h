@@ -53,9 +53,6 @@ struct stat {
 #define S_IWOTH 00002
 #define S_IXOTH 00001
 
-/* lab 7 */
-extern int proc_read(int dev, char *buf, int count, unsigned long* pos);
-
 extern int chmod(const char *_path, mode_t mode);
 extern int fstat(int fildes, struct stat *stat_buf);
 extern int mkdir(const char *_path, mode_t mode);

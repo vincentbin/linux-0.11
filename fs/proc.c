@@ -8,7 +8,7 @@
 
 extern int vsprintf(char* buf, const char* fmt, va_list args);
 
-int sprintf(char *buf, const char* fmt, ...){
+int sprintf(char* buf, const char* fmt, ...){
     va_list args;
     int i;
     va_start(args, fmt);
