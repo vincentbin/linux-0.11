@@ -83,3 +83,8 @@ int sem_unlink(const char *name);
 逻辑地址 -> GDT -> LDT -> 页表 -> 物理地址
 
 ## lab6 终端设备的控制（branch lab6）
+1. 键盘中断发生时，取出键盘扫描码根据 key_table 表进行扫描码处理。
+2. 完成 F12 键对应的函数编写。
+3. 处理完毕后将有对应扫描码的字符放入 put_queue。
+4. 调用 do_tty_interrupt 进行最后的处理，其中 copy_to_cooked 做最后的预处理，然后调用 con_write 输出到显卡。
+5. write -> sys_write -> tty_write -> con_write。
