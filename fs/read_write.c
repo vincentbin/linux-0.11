@@ -24,7 +24,6 @@ extern int file_write(struct m_inode * inode, struct file * filp,
 
 extern int proc_read(int dev, char* buf, int count, unsigned long* pos);
 
-
 int sys_lseek(unsigned int fd,off_t offset, int origin)
 {
 	struct file * file;

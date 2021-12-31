@@ -32,7 +32,7 @@ int proc_read(int dev, char* buf, int count, unsigned long* pos) {
         struct task_struct **p;
         len = sprintf(tbuf, "pid    state    parent    counter    start_time\n");
         total_len += len;
-        if(total_len >= *pos){ //找到上一次读取到的地方
+        if(total_len >= *pos){ // 找到上一次读取到的地方
             flag = 1;
             strncpy(infobuf, tbuf, total_len-(*pos));
             total_len = total_len - (*pos);

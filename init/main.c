@@ -181,7 +181,7 @@ void init(void)
     mkdir("proc", 0755); /* 0755 rwxr-xr-x */
     mknod("/proc/psinfo", S_IFPROC|0444, 0); /* 0444 read only */
     mknod("/proc/hdinfo", S_IFPROC|0444, 1);
-    mknod("/proc/indoinfo", S_IFPROC|0444, 2);
+    mknod("/proc/inodeinfo", S_IFPROC|0444, 2);
 
 	printf("%d buffers = %d bytes buffer space\n\r",NR_BUFFERS,
 		NR_BUFFERS*BLOCK_SIZE);

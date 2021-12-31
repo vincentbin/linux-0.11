@@ -29,7 +29,7 @@ struct stat {
 
 /* lab 7 */
 #define S_IFPROC 0030000
-
+/* lab 7 */
 #define S_ISPROC(m) (((m) & S_IFMT) == S_IFPROC)
 
 #define S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
