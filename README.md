@@ -88,3 +88,5 @@ int sem_unlink(const char *name);
 3. 处理完毕后将有对应扫描码的字符放入 put_queue。
 4. 调用 do_tty_interrupt 进行最后的处理，其中 copy_to_cooked 做最后的预处理，然后调用 con_write 输出到显卡。
 5. write -> sys_write -> tty_write -> con_write。
+
+## lab7 proc文件系统的实现（branch lab7）
