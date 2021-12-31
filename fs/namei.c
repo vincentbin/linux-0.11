@@ -441,7 +441,9 @@ int sys_mknod(const char * filename, int mode, int dev)
 		return -ENOSPC;
 	}
 	inode->i_mode = mode;
-	if (S_ISBLK(mode) || S_ISCHR(mode))
+
+	/* lab 7 make node need */
+	if (S_ISBLK(mode) || S_ISCHR(mode) || S_ISPROC(mode))
 		inode->i_zone[0] = dev;
 	inode->i_mtime = inode->i_atime = CURRENT_TIME;
 	inode->i_dirt = 1;

@@ -18,14 +18,19 @@ struct stat {
 };
 
 #define S_IFMT  00170000
-#define S_IFREG  0100000
+#define S_IFREG  0100000 /* 普通文件 */
 #define S_IFBLK  0060000
 #define S_IFDIR  0040000
-#define S_IFCHR  0020000
+#define S_IFCHR  0020000 /* 字符设备文件 */
 #define S_IFIFO  0010000
 #define S_ISUID  0004000
 #define S_ISGID  0002000
 #define S_ISVTX  0001000
+
+/* lab 7 */
+#define S_IFPROC 0030000
+
+#define S_ISPROC(m) (((m) & S_IFMT) == S_IFPROC)
 
 #define S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
 #define S_ISDIR(m)	(((m) & S_IFMT) == S_IFDIR)
@@ -47,6 +52,9 @@ struct stat {
 #define S_IROTH 00004
 #define S_IWOTH 00002
 #define S_IXOTH 00001
+
+/* lab 7 */
+int proc_read(unsigned short dev, char *buf, int count, off_t *pos);
 
 extern int chmod(const char *_path, mode_t mode);
 extern int fstat(int fildes, struct stat *stat_buf);

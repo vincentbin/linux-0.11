@@ -22,6 +22,8 @@ extern int file_read(struct m_inode * inode, struct file * filp,
 extern int file_write(struct m_inode * inode, struct file * filp,
 		char * buf, int count);
 
+
+
 int sys_lseek(unsigned int fd,off_t offset, int origin)
 {
 	struct file * file;
@@ -76,6 +78,12 @@ int sys_read(unsigned int fd,char * buf,int count)
 			return 0;
 		return file_read(inode,file,buf,count);
 	}
+
+    /* lab 7 */
+    if(S_ISPROC(inode->i_mode)){
+        return proc_read(inode->i_zone[0], buf, count, &file->f_pos);
+    }
+
 	printk("(Read)inode->i_mode=%06o\n\r",inode->i_mode);
 	return -EINVAL;
 }

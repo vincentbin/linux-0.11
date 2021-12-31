@@ -32,6 +32,10 @@ dep:
 	cp tmp_make Makefile
 
 ### Dependencies:
+
+# lab 7
+proc.o: proc.c ../include/linux/kernel.h ../include/stdarg.h
+
 bitmap.o: bitmap.c ../include/string.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/sys/types.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h
