@@ -1,5 +1,5 @@
 # linux-0.11
-有用的参考资料：https://github.com/beride/linux0.11-1（linux-0.11 注释版）
+有用的参考资料（linux-0.11 注释版）：https://github.com/beride/linux0.11-1
 ## :heavy_check_mark: lab0 操作系统的引导（branch lab0）
 1. 改写 bootsect.s 主要完成如下功能：
     - bootsect.s 能在屏幕上打印一段提示信息“XXX is booting...”。
