@@ -1,5 +1,5 @@
 # linux-0.11
-
+有用的参考资料：https://github.com/beride/linux0.11-1（linux-0.11 注释版）
 ## lab0 操作系统的引导（branch lab0）
 1. 改写 bootsect.s 主要完成如下功能：
     - bootsect.s 能在屏幕上打印一段提示信息“XXX is booting...”。
@@ -90,3 +90,49 @@ int sem_unlink(const char *name);
 5. write -> sys_write -> tty_write -> con_write。
 
 ## lab7 proc文件系统的实现（branch lab7）
+### 理论知识
+
+#### 磁盘
+对机械磁盘的读写需要三个参数进行定位 
+1. 柱面（C）
+2. 磁头（H）
+3. 扇区（S）
+```c
+block = C * (H * S) + H * S + S;
+```
+将几个扇区划分为一个block来提升磁盘io效率（linux0.11 将2个扇区划分为一个block）对于更上层的角度而言，只需要输入读写的block号即可进行磁盘io。
+
+划分：
+引导块 | 超级块 | inode位图 | 数据位图 | inode块 | 数据块
+
+#### 文件
+用 FCB（linux0.11 中的 inode）来存储文件信息，其中包括不同种类的文件（例：设备文件，目录文件...）。
+```c
+struct m_inode 
+ { 
+ unsigned short i_mode; // 文件类型和属性(rwx 位)。 
+ unsigned short i_uid; // 用户id（文件拥有者标识符）。 
+ unsigned long i_size; // 文件大小（字节数）。 
+ unsigned long i_mtime; // 修改时间（自1970.1.1:0 算起，秒）。 
+ unsigned char i_gid; // 组id(文件拥有者所在的组)。 
+ unsigned char i_nlinks; // 文件目录项链接数。 
+ unsigned short i_zone[9]; // 直接(0-6)、间接(7)或双重间接(8)逻辑块号。 
+ /* these are in memory also */ 
+ struct task_struct *i_wait; // 等待该i 节点的进程。 
+ unsigned long i_atime; // 最后访问时间。 
+ unsigned long i_ctime; // i 节点自身修改时间。 
+ unsigned short i_dev; // i 节点所在的设备号。 
+ unsigned short i_num; // i 节点号。 
+ unsigned short i_count; // i 节点被使用的次数，0 表示该i 节点空闲。 
+ unsigned char i_lock; // 锁定标志。 
+ unsigned char i_dirt; // 已修改(脏)标志。 
+ unsigned char i_pipe; // 管道标志。 
+ unsigned char i_mount; // 安装标志。 
+ unsigned char i_seek; // 搜寻标志(lseek 时)。 
+ unsigned char i_update; // 更新标志。 
+ }; 
+```
+inode里存放着文件在磁盘中的 block 号，以及其他的一些文件描述信息。可以存在多级的盘块位置引导，分为直接索引、间接索引获得 block 位置。
+
+#### 目录
+根据 目录 inode 找到对应数据盘块号中的数据，其中有该目录下存在子目录的 inode 盘块号。一层一层查找下去就可以找到最终目标目录的位置。
