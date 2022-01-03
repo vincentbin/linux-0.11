@@ -14,9 +14,9 @@
 2. 在 include/unistd.h 中添加宏，指明调用函数表定位。
 3. 在 include/linux/sys.h 中写入两个函数（sys_iam, sys_whoami）函数定义。并在其后的函数表增加两个新函数。
 4. 新增 kernel/who.c 实现两个系统调用。 
-5. 修改makefile 
+5. 修改makefile
     - OBJS 增加who的依赖（who.o）
-    - Dependencies中增加 who.s 和 who.o的依赖产生条件。
+    - Dependencies中增加 who.s 和 who.o的依赖产生条件
 6. make 执行./run 进入linux子系统，在/usr/include/unistd.h中增加iam 和 whoami 的宏定义（同第2点）。
 7. 在用户态编写测试程序测试是否成功。
 
@@ -29,7 +29,7 @@
     - 进程开始 kernel/system_call.s -> sys_fork (call copy_process) 
     - 运行、阻塞态切换 kernel/sched.c -> schedule sys_pause sleep_on interruptible_sleep_on wake_up
     - 退出 kernel/exit.c -> do_exit sys_waitpid
-6. 注意：linux-0.11 中gcc 不可以编译 //注释
+6. 注意：linux-0.11 中 gcc 不可以编译 // 注释。
 
 ## :heavy_check_mark: lab3 替换linux0.11原有的tss进程切换为堆栈切换（branch lab3）
 原切换方式是通过tss，相当于是寄存器的快照，通过intel提供的指令直接进行现场替换，速度较慢。堆栈切换的效率更高。
@@ -37,9 +37,9 @@
 1. 原switch_to方法基于tss切换，我们要在头文件将其注释掉。
 2. 新switch_to，需要两个参数（1：下一个pcb的指针 2：下一个任务在数组中的位置 用于切换LDT）。
 ### kernel/system_call.s
-1. 编写switch_to 汇编实现。
-2. pcb的切换。
-3. 重写tss内核栈位置。（此时保留tss，但全局只有一个tss，不利用它来做进程切换。）
+1. 编写switch_to 汇编实现
+2. pcb的切换
+3. 重写tss内核栈位置（此时保留tss，但全局只有一个tss，不利用它来做进程切换。）
 4. 切换内核栈
 5. LDT的切换
 ### kernel/fork.c
