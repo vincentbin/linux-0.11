@@ -92,6 +92,8 @@ int sem_unlink(const char *name);
 
 ## :heavy_check_mark: lab5 地址的映射与共享（branch lab5）
 逻辑地址 -> GDT -> LDT -> 页表 -> 物理地址
+### 理论
+todo
 
 :blue_book: 实验指导书：https://www.lanqiao.cn/courses/115/labs/573/document/
 
