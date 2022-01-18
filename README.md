@@ -1,7 +1,7 @@
 # linux-0.11
-理论课：https://www.bilibili.com/video/BV1d4411v7u7
+:blue_book: 理论课：https://www.bilibili.com/video/BV1d4411v7u7
 
-有用的参考资料（*linux-0.11* 注释版）：https://github.com/beride/linux0.11-1
+:blue_book: 有用的参考资料（*linux-0.11* 注释版）：https://github.com/beride/linux0.11-1
 
 *main branch* 为 *linux-0.11* 源码
 
