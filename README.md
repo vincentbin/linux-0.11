@@ -1,7 +1,7 @@
 # linux-0.11
-*main branch* 是 *linux-0.11* 源码
-
+理论课：https://www.bilibili.com/video/BV1d4411v7u7
 有用的参考资料（*linux-0.11* 注释版）：https://github.com/beride/linux0.11-1
+*main branch* 为 *linux-0.11* 源码
 
 ## :heavy_check_mark: lab0 操作系统的引导（branch lab0）
 1. 改写 bootsect.s 主要完成如下功能：
