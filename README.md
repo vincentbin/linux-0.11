@@ -5,6 +5,8 @@
 
 *main branch* 为 *linux-0.11* 源码
 
+#### 代码差异查看：Pull request 选择对应分支与 main 进行比较即可
+
 ## :heavy_check_mark: lab0 操作系统的引导（branch lab0）
 1. 改写 bootsect.s 主要完成如下功能：
     - bootsect.s 能在屏幕上打印一段提示信息“XXX is booting...”。
